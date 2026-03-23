@@ -33,7 +33,35 @@ bool testElementAccess(){
     v.pushBack(2);
     return v[0] == 1 && v[1] == 2;
 }
-
+bool testSwap(){
+    topit::Vector< int > v;
+    v.pushBack(1);
+    topit::Vector< int > yav;
+    yav.pushBack(2);
+    v.swap(yav);
+    return yav[0] == 1 && v[0] == 2;
+}
+bool testPushFront(){
+    topit::Vector< int > v;
+    v.pushFront(1);
+    v.pushFront(2);
+    return v[0] == 1 && v[1] == 2;
+}
+bool testEmptyCapacity(){
+    topit::Vector< int > v;
+    return !v.getCapacity();
+}
+bool testEmptySize(){
+    topit::Vector< int > v;
+    return !v.getSize();
+}
+bool testPopBack(){
+    topit::Vector< int > v;
+    v.pushBack(1);
+    v.pushBack(2);
+    v.popBack();
+    return v.getSize() == 1 && v[0] == 1;
+}
 
 int main()
 {
@@ -43,7 +71,12 @@ int main()
         {"Default vector is empty", testDefaultVector},
         {"Vector with any value is not empty", testVectorWithValue},
         {"Inbound access elenets", testElementAccess},
-        {"Sizes must be equal as elements", testCopyConstructor}
+        {"Sizes must be equal as elements", testCopyConstructor},
+        {"Correct swap elements", testSwap},
+        {"The element should be added in the beginning",testPushFront},
+        {"Capacity of empty vector should be 0",testEmptyCapacity},
+        {"Size of empty vector should be 0",testEmptySize},
+        {"Last element should be deleted",testPopBack}
     };
     const size_t count = sizeof(tests) / sizeof(pair_t);
     std::cout<<std::boolalpha;

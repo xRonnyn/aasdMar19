@@ -31,6 +31,14 @@ namespace topit
     };
 }
 template < class T >
+void topit::Vector< T >::popBack(){
+  if (size_ == 0){
+    throw std::out_of_range("Vector is empty");
+  }
+  size_--;
+  data_[size_].~T();
+}
+template < class T >
 size_t topit::Vector< T >::getCapacity() const noexcept{
   return capacity_;
 }
@@ -79,7 +87,7 @@ size_t topit::Vector< T >::getSize() const noexcept
 
 template< class T >
 topit::Vector< T >::Vector(const Vector< T >& rhs):
-  Vector(rhs.getSize()); //ЗДесь мы пишем таким образом так как иначе надо будет писать catch (если создавать через поля просто) а так мы вызываем конструктор и деструктор вызовится
+  Vector(rhs.getSize()) //ЗДесь мы пишем таким образом так как иначе надо будет писать catch (если создавать через поля просто) а так мы вызываем конструктор и деструктор вызовится
 {
   for (size_t i = 0; i < getSize(); ++i){
     data_[i] = rhs[i];
@@ -94,14 +102,14 @@ template< class T >
 T& topit::Vector< T >::operator[](size_t id) noexcept
 {
   assert(id < getSize());
-  return data_[0];
+  return data_[id];
 }
 
 template< class T >
 const T& topit::Vector< T >::operator[](size_t id) const noexcept
 {
   assert(id < getSize());
-  return data_[0];
+  return data_[id];
 }
 
 template< class T >
@@ -114,6 +122,7 @@ void topit::Vector< T >::pushBack(const T&)
       for (size_t i = 0; i < getSize(); ++i){
         new_data[i] = data_[i];
       }
+    }
     catch(){
       delete[] new_data;
       throw;
