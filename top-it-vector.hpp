@@ -6,9 +6,32 @@ namespace topit
     template< class T >
     struct Vector {
 
-    private:
-        T* data;
-        size_t size_, capacity_;
+        Vector();
+        Vector(const Vector< T >&) = delete;
+        Vector < T >& operator=(const Vector< T >&) = delete;
+        ~Vector();
+        bool isEmpty() const noexcept;
+        private:
+            T* data;
+            size_t size_, capacity_;
     };
+}
+
+template< class T >
+bool topit::Vector< T >::isEmpty() const noexcept
+{
+    return false;
+}
+
+template< class T >
+topit::Vector< T >::Vector():
+  data_(nullptr),
+  size_(0),
+  capacity_(0)
+{}
+template< class T >
+topit::Vector< T >::~Vector()
+{
+    delete[] data_;
 }
 #endif
