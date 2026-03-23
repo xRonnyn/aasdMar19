@@ -7,14 +7,21 @@ namespace topit
     struct Vector {
         Vector();
         Vector(const Vector< T >&) = delete;
-        void swap(Vector< T >& rhs) noexcept;
         Vector < T >& operator=(const Vector< T >&) = delete;
         ~Vector();
+
+        void swap(Vector< T >& rhs) noexcept;
+
         bool isEmpty() const noexcept;
-        void pushBack(const T&);
+        size_t getSize() const noexcept;
+        size_t getCapacity() const noexcept;
+
         T& operator[](size_t id) noexcept;
         const T& operator[](size_t id) const noexcept;
+
+        void pushBack(const T&);
         void pushFront(const T&);
+        void popBack();
 
     private:
         T* data_;
@@ -23,6 +30,11 @@ namespace topit
         explicit Vector(size_t k);
     };
 }
+template < class T >
+size_t topit::Vector< T >::getCapacity() const noexcept{
+  return capacity_;
+}
+
 template < class T >
 void topit::Vector < T >::pushFront(const T &val) // сложный момент : в дефолт библиотеке вектор не реализовано
 {
@@ -95,7 +107,22 @@ const T& topit::Vector< T >::operator[](size_t id) const noexcept
 template< class T >
 void topit::Vector< T >::pushBack(const T&)
 {
-
+  if (size_ == capacity_){
+    size_t newCap *= 2;
+    T* new_data = new T[newCap];
+    try{
+      for (size_t i = 0; i < getSize(); ++i){
+        new_data[i] = data_[i];
+      }
+    catch(){
+      delete[] new_data;
+      throw;
+    }
+    delete[] data_;
+    data_ = new_data;
+    capacity_ = newCap;
+  }
+  data_[size_++] = T;
 }
 
 #endif
